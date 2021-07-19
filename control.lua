@@ -18,4 +18,4 @@ local function on_keypress(event)
     end
 end
 
-  script.on_event("combinator-toggle-key", on_keypress)
+script.on_event("combinator-toggle-key", on_keypress)
