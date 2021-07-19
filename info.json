@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "title": "Combinator Toggle",
     "author": "Inappropriate Penguin",
-    "homepage": "",
+    "homepage": "https://github.com/InappropriatePenguin/combinator-toggle",
     "dependencies": [  
        "base >= 1.1.36"
     ],
