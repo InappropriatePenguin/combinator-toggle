@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2021-08-03
+  Features:
+    - Added optional support for triggering power switches and manual mode for locomotives. Disabled by default, configurable in settings.
+    - Added sound cue for failed toggle due to target entity being out of reach (or for belonging to a different force).
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 2021-07-19
   Features:
