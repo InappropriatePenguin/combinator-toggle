@@ -53,7 +53,7 @@ function on_keypress(event)
                 play_sound_effect(entity, entity.train.manual_mode, sound_paths)
             end
         else
-            entity.surface.play_sound({position=entity.position, path=sound_paths["failed"]})
+            player.play_sound({path=sound_paths["failed"]})
         end
     end
 end
