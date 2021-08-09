@@ -17,21 +17,29 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function (event)
 end)
 
 function play_sound_effect(entity, state, sounds)
-    local sound_path = state and sounds["on"] or sounds["off"]
+    local sound_path = state and sounds.on or sounds.off
     entity.surface.play_sound({position=entity.position, path=sound_path})
+end
+
+function create_flying_text(player, entity, state, texts)
+    local text = state and texts.on or texts.off
+    player.create_local_flying_text({text=text, position=entity.position})
 end
 
 function on_keypress(event)
     local player_index = event.player_index
     local player = game.players[player_index]
     local entity = player.selected
+    
     local sound_paths = {
-        on="utility/upgrade_selection_ended",
-        off="utility/upgrade_selection_started",
-        failed="utility/cannot_build"}
-    local sound_paths_switch = {
-        on="utility/upgrade_selection_ended",
-        off="utility/wire_pickup",
+        combinator = {on="utility/upgrade_selection_ended", off="utility/upgrade_selection_started"},
+        power_switch = {on="utility/upgrade_selection_ended", off="utility/wire_pickup"},
+        failed = "utility/cannot_build"
+    }
+
+    local texts = {
+        combinator = {on={"combinator-toggle.on"}, off={"combinator-toggle.off"}},
+        locomotive = {on={"combinator-toggle.manual"}, off={"combinator-toggle.automatic"}}
     }
 
     global.mod_settings = global.mod_settings or {}
@@ -43,17 +51,21 @@ function on_keypress(event)
             if entity.type == "constant-combinator" and global.mod_settings[player.index]['combinator'] then
                 local control = entity.get_or_create_control_behavior()
                 control.enabled = not control.enabled
-                play_sound_effect(entity, control.enabled, sound_paths)
+                play_sound_effect(entity, control.enabled, sound_paths.combinator)
+                create_flying_text(player, entity, control.enabled, texts.combinator)
+            -- toggle if selected entity is a power switch
             elseif entity.type == "power-switch" and global.mod_settings[player.index]['power_switch'] then
                 entity.power_switch_state = not entity.power_switch_state
-                play_sound_effect(entity, entity.power_switch_state, sound_paths_switch)
+                play_sound_effect(entity, entity.power_switch_state, sound_paths.power_switch)
+                create_flying_text(player, entity, entity.power_switch_state, texts.combinator)
             -- toggle if selected entity is a train
             elseif entity.type == "locomotive" and global.mod_settings[player.index]['locomotive'] then
                 entity.train.manual_mode = not entity.train.manual_mode
-                play_sound_effect(entity, entity.train.manual_mode, sound_paths)
+                play_sound_effect(entity, entity.train.manual_mode, sound_paths.combinator)
+                create_flying_text(player, entity, entity.train.manual_mode, texts.locomotive)
             end
         else
-            player.play_sound({path=sound_paths["failed"]})
+            player.play_sound({path=sound_paths.failed})
         end
     end
 end
