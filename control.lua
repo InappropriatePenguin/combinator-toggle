@@ -53,8 +53,9 @@ function on_keypress(event)
     local entity = player.selected
 
     local sound_paths = {
-        combinator = {on="utility/upgrade_selection_ended", off="utility/upgrade_selection_started"},
-        power_switch = {on="utility/upgrade_selection_ended", off="utility/wire_pickup"},
+        combinator = {on="utility/build_ghost_upgrade", off="utility/build_ghost_upgrade_cancel"},
+        power_switch = {on="utility/switch_gun", off="utility/wire_pickup"},
+        locomotive = {on="utility/wire_pickup", off="utility/switch_gun"},
         failed = "utility/cannot_build"
     }
 
@@ -70,7 +71,7 @@ function on_keypress(event)
         local player_settings = storage.mod_settings[player_index]
         -- toggle if selected entity is of "constant-combinator" type
         if entity.type == "constant-combinator" and player_settings.combinator then
-            local control = entity.get_or_create_control_behavior()
+            local control = entity.get_or_create_control_behavior() --[[@as LuaConstantCombinatorControlBehavior]]
             control.enabled = not control.enabled
             play_sound_effect(entity, control.enabled, sound_paths.combinator)
             create_flying_text(player, entity, control.enabled, texts.combinator)
@@ -82,7 +83,7 @@ function on_keypress(event)
         -- toggle if selected entity is a train
         elseif entity.type == "locomotive" and player_settings.locomotive then
             entity.train.manual_mode = not entity.train.manual_mode
-            play_sound_effect(entity, entity.train.manual_mode, sound_paths.combinator)
+            play_sound_effect(entity, entity.train.manual_mode, sound_paths.locomotive)
             create_flying_text(player, entity, entity.train.manual_mode, texts.locomotive)
         end
     else
