@@ -1,13 +1,13 @@
 {  
     "name": "combinator-toggle",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "title": "Combinator Toggle",
     "author": "Inappropriate Penguin",
     "homepage": "https://github.com/InappropriatePenguin/combinator-toggle",
     "dependencies": [  
-       "base >= 1.1.36"
+       "base >= 2.0.7"
     ],
     "description": "Toggle constant combinators, power switches, and locomotives on or off using a hotkey (default: F). Plays different sound cues for on/off toggles. Should work with most modded constant combinators.",
-    "factorio_version": "1.1"
+    "factorio_version": "2.0"
  }
  

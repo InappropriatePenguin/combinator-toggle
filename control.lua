@@ -1,4 +1,4 @@
-global.mod_settings = {}
+storage.mod_settings = {}
 
 MOD_PREFIX = "combinator-toggle-"
 
@@ -12,7 +12,7 @@ NAMES = {
 }
 
 function update_player_settings(player_index)
-    global.mod_settings[player_index] = {
+    storage.mod_settings[player_index] = {
         combinator = settings.get_player_settings(player_index)[NAMES.settings.combinator].value,
         power_switch = settings.get_player_settings(player_index)[NAMES.settings.power_switch].value,
         locomotive = settings.get_player_settings(player_index)[NAMES.settings.locomotive].value
@@ -25,14 +25,14 @@ function update_single_setting(event)
     local player_index = event.player_index
 
     -- get all of this player's settings if they have no mod_settings table
-    if not global.mod_settings[player_index] then
+    if not storage.mod_settings[player_index] then
         update_player_settings(player_index)
         return
     end
 
     for key, setting in pairs(NAMES.settings) do
         if event.setting == setting then
-            global.mod_settings[player_index][key] = settings.get_player_settings(player_index)[setting].value
+            storage.mod_settings[player_index][key] = settings.get_player_settings(player_index)[setting].value
         end
     end
 end
@@ -63,11 +63,11 @@ function on_keypress(event)
         locomotive = {on={"combinator-toggle.manual"}, off={"combinator-toggle.automatic"}}
     }
 
-    if not global.mod_settings[player_index] then update_player_settings(player_index) end
+    if not storage.mod_settings[player_index] then update_player_settings(player_index) end
     if not entity or not entity.valid then return end
 
     if player.can_reach_entity(entity) and player.force.name == entity.force.name then
-        local player_settings = global.mod_settings[player_index]
+        local player_settings = storage.mod_settings[player_index]
         -- toggle if selected entity is of "constant-combinator" type
         if entity.type == "constant-combinator" and player_settings.combinator then
             local control = entity.get_or_create_control_behavior()
